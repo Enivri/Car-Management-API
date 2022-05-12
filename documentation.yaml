@@ -1,0 +1,811 @@
+---
+openapi: 3.0.0
+info:
+  title: Challenge 6
+  description: "This is an API. \nCRUD of users. \nCRUD of cars.\n"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: irvineidris24@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://virtserver.swaggerhub.com/Enivri/Challenge_6/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:2000
+tags:
+- name: users
+  description: CRUD of users
+- name: cars
+  description: CRUD of cars
+paths:
+  /register:
+    post:
+      tags:
+      - users
+      summary: Creating a new member
+      description: new created member
+      operationId: register
+      requestBody:
+        $ref: '#/components/requestBodies/Users'
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400Response'
+      security:
+      - bearerAuth: []
+  /registerAdmin:
+    post:
+      tags:
+      - users
+      summary: Creating new Admin (only super admin)
+      description: new created Admin
+      operationId: registerAdmin
+      requestBody:
+        $ref: '#/components/requestBodies/Users'
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400Response'
+      security:
+      - bearerAuth: []
+  /login:
+    post:
+      tags:
+      - users
+      summary: Logs in user
+      description: Return credential user with JWT token
+      operationId: login
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400Response'
+  /users:
+    get:
+      tags:
+      - users
+      summary: Get current user
+      description: Get current user from jwt token
+      operationId: getCurrentUser
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+  /cars:
+    get:
+      tags:
+      - cars
+      summary: Get all cars
+      description: get all cars from the database
+      operationId: getAllCars
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - cars
+      summary: Create car
+      description: Return a new created car
+      operationId: createCars
+      requestBody:
+        $ref: '#/components/requestBodies/Cars'
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_5'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400Response'
+      security:
+      - bearerAuth: []
+  /cars/{id}:
+    get:
+      tags:
+      - cars
+      summary: Find cars by id
+      description: get car by id from database
+      operationId: getCarsById
+      parameters:
+      - name: id
+        in: path
+        description: Id of cars
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: cd0c0f14-7aef-49fc-b502-d87f6a5cfacd
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_6'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - cars
+      summary: Update cars by id
+      description: update car by id from database
+      operationId: updateCars
+      parameters:
+      - name: id
+        in: path
+        description: Id of cars
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: cd0c0f14-7aef-49fc-b502-d87f6a5cfacd
+      requestBody:
+        $ref: '#/components/requestBodies/Cars'
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_7'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - cars
+      summary: Soft delete specific cars by ID
+      description: soft delete car by id from database
+      operationId: deleteCars
+      parameters:
+      - name: id
+        in: path
+        description: Id of cars
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+          example: cd0c0f14-7aef-49fc-b502-d87f6a5cfacd
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_8'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+      security:
+      - bearerAuth: []
+  /fillterCar:
+    get:
+      tags:
+      - cars
+      summary: fillter cars
+      description: fillter cars from the database
+      operationId: fillterCars
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401Response'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Users:
+      required:
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+          example: member1
+        email:
+          type: string
+          example: member1@gmail.com
+        password:
+          type: string
+          example: member123
+    Login:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+          example: member1@gmail.com
+        password:
+          type: string
+          example: member123
+    UsersResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: member1
+        email:
+          type: string
+          example: member1@gmail.com
+        password:
+          type: string
+          example: $2b$10$9psBIvFuKVKfHP2N6dV54OC6KjUwlIWPkXoG8j77Qqd2eFvLbGNNi3
+        role:
+          type: string
+          example: member
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-05-02T12:13:13.588Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2022-05-02T12:13:13.588Z
+    AdminsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: admin1
+        email:
+          type: string
+          example: admin1@gmail.com
+        password:
+          type: string
+          example: $2b$10$9psBIvFuKVKfHP2N6dV54OC6KjUwlIWPkXoG8j77Qqd2eFvLbGNNi3
+        role:
+          type: string
+          example: admin
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-05-02T12:13:13.588Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2022-05-02T12:13:13.588Z
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTllZDJhLTFhNzctNGFmMy1iNDk3LWU3Njk0ZWU2YTFmZSIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTY1MTQ4OTQzMywiZXhwIjoxNjUxNDkzMDMzfQ.evq_8PHSMP5yfRr_oSSdhDgNVXtFzxA2jw_fV81idvU
+    Cars:
+      required:
+      - Manufacture
+      - availableAt
+      - capacity
+      - description
+      - image
+      - isWithDriver
+      - model
+      - options
+      - plate
+      - rentPerDay
+      - specs
+      - transmission
+      - type
+      - year
+      type: object
+      properties:
+        plate:
+          type: string
+          example: b 8907 b
+        manufacture:
+          type: string
+          example: toyota
+        model:
+          type: string
+          example: Avanza
+        image:
+          type: string
+          example: /images/cars15.jpg
+        rentPerDay:
+          type: integer
+          example: 1600000
+        capacity:
+          type: integer
+          example: 5
+        description:
+          type: string
+          example: good daily car and driver car
+        transmission:
+          type: string
+          example: matic
+        type:
+          type: string
+          example: mini bus
+        year:
+          type: string
+          example: "2020"
+        options:
+          type: array
+          example:
+          - heated seats
+          - double blower
+          - pilot seats
+          items:
+            type: object
+        specs:
+          type: array
+          example:
+          - 2.0 L
+          - rear wheal drive
+          items:
+            type: object
+        isWithDriver:
+          type: boolean
+          example: true
+    CarsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: cd0c0f14-7aef-49fc-b502-d87f6a5cfacd
+        plate:
+          type: string
+          example: b 8907 b
+        manufacture:
+          type: string
+          example: toyota
+        model:
+          type: string
+          example: Avanza
+        image:
+          type: string
+          example: /images/cars15.jpg
+        rentPerDay:
+          type: integer
+          example: 1600000
+        capacity:
+          type: integer
+          example: 5
+        description:
+          type: string
+          example: good daily car and driver car
+        transmission:
+          type: string
+          example: matic
+        type:
+          type: string
+          example: mini bus
+        year:
+          type: string
+          example: "2020"
+        options:
+          type: array
+          example:
+          - heated seats
+          - double blower
+          - pilot seats
+          items:
+            type: object
+        specs:
+          type: array
+          example:
+          - 2.0 L
+          - rear wheal drive
+          items:
+            type: object
+        isWithDriver:
+          type: boolean
+          example: true
+        availableAt:
+          type: string
+          example: 25-06-2022, 08:00
+        createdBy:
+          type: string
+          example: superadmin
+        updatedBy:
+          type: string
+          example: superadmin
+        deletedBy:
+          type: string
+          nullable: true
+          example: superadmin
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-05-02T12:13:13.588Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2022-05-02T12:13:13.588Z
+    "401Response":
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Not Authorize
+        data:
+          type: string
+          nullable: true
+    "400Response":
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: please fill in
+        data:
+          type: string
+          nullable: true
+    inline_response_200:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Berhasil mendaftarkan user
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsersResponse'
+    inline_response_200_1:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Berhasil mendaftarkan admin
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminsResponse'
+    inline_response_200_2:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: User berhasil login
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoginResponse'
+    inline_response_200_3:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: hi
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsersResponse'
+    inline_response_200_4:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: get All Cars successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarsResponse'
+    inline_response_200_5:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: car created successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarsResponse'
+    inline_response_200_6:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: get Cars by id successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarsResponse'
+    inline_response_200_7:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Car updated successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarsResponse'
+    inline_response_200_8:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Car deleted successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarsResponse'
+    inline_response_200_9:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: fillter Cars successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarsResponse'
+  responses:
+    "200RegisterUsersResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200'
+    "200RegisterAdminsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_1'
+    "200LoginResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_2'
+    "200GetCurrentUsersResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_3'
+    "200CreateCarsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_5'
+    "200GetAllCarsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_4'
+    "200GetCarsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_6'
+    "200UpdateCarsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_7'
+    "200DeleteCarsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_8'
+    "200FillterCarsResponse":
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_9'
+    "401":
+      description: Not Authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/401Response'
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/400Response'
+  parameters:
+    usersId:
+      name: id
+      in: path
+      description: Id of users
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        example: 1
+    carsId:
+      name: id
+      in: path
+      description: Id of cars
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+        example: cd0c0f14-7aef-49fc-b502-d87f6a5cfacd
+  requestBodies:
+    Users:
+      description: User that are added to the database
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Users'
+      required: true
+    Login:
+      description: login user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
+      required: true
+    Cars:
+      description: Cars that are added to the database
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cars'
+      required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
