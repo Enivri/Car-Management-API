@@ -78,7 +78,7 @@ class carsRepository {
 
     static async fillterCar({ isWithDriver, availableAt, capacity }) {
         if (isWithDriver) {
-            const fillterCar = await Cars.findOne({
+            const fillterCar = await Cars.findAll({
                 where: { 
                     isWithDriver, 
                     deletedBy: null 
@@ -87,7 +87,7 @@ class carsRepository {
             return fillterCar;
         }
         if (availableAt) {
-            const fillterCar = await Cars.findOne({
+            const fillterCar = await Cars.findAll({
                 where: {
                     availableAt: {
                         [Op.eq]: availableAt,
@@ -98,7 +98,7 @@ class carsRepository {
             return fillterCar;
         }
         if (capacity) {
-            const fillterCar = await Cars.findOne({
+            const fillterCar = await Cars.findAll({
                 where: {
                     capacity: {
                         [Op.eq]: capacity,
