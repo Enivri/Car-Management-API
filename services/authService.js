@@ -2,6 +2,7 @@ const usersRepository = require("../repositories/usersRepository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT } = require("../lib/const");
+const { OAuth2Client } = require("google-auth-library");
 
 const SALT_ROUND = 10;
 
@@ -233,6 +234,62 @@ class AuthService {
                     },
                 };
             }
+        }
+    }
+
+    static async loginGoogle({ google_credential: googleCredential }) {
+        try {
+            // Get google user credential
+            const client = new OAuth2Client(
+                "52535015285-vv5u8k47qdcv43sv1fe5jehug7m35gb4.apps.googleusercontent.com"
+            );
+
+            const userInfo = await client.verifyIdToken({
+                idToken: googleCredential,
+                audience:
+                    "52535015285-vv5u8k47qdcv43sv1fe5jehug7m35gb4.apps.googleusercontent.com",
+            });
+
+            const { email, name } = userInfo.payload;
+
+            const getUserByEmail = await usersRepository.getByEmail({ email });
+
+            if (!getUserByEmail) {
+                await usersRepository.create({
+                    name,
+                    email,
+                    role: "member",
+                });
+            }
+
+            const token = jwt.sign(
+                {
+                    id: getUserByEmail.id,
+                    email: getUserByEmail.email,
+                },
+                JWT.SECRET,
+                {
+                    expiresIn: JWT.EXPIRED,
+                }
+            );
+
+            return {
+                status: true,
+                status_code: 200,
+                message: "User berhasil login",
+                data: {
+                    token,
+                },
+            };
+        } catch (err) {
+            return {
+                status: false,
+                status_code: 500,
+                message: err.message,
+                data: {
+                    registered_user: null,
+                },
+            };
         }
     }
 
